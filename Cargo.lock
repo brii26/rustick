@@ -44,8 +44,17 @@ dependencies = [
 name = "client"
 version = "0.1.0"
 dependencies = [
+ "common",
  "tokio",
  "tokio-tungstenite",
+]
+
+[[package]]
+name = "common"
+version = "0.1.0"
+dependencies = [
+ "serde",
+ "serde_json",
 ]
 
 [[package]]
@@ -131,6 +140,17 @@ dependencies = [
  "futures-task",
  "pin-project-lite",
  "slab",
+]
+
+[[package]]
+name = "generator"
+version = "0.1.0"
+dependencies = [
+ "common",
+ "rand 0.10.1",
+ "serde",
+ "serde_json",
+ "tokio",
 ]
 
 [[package]]
@@ -403,6 +423,7 @@ dependencies = [
 name = "server"
 version = "0.1.0"
 dependencies = [
+ "common",
  "rand 0.10.1",
  "serde",
  "serde_json",
