@@ -1,5 +1,8 @@
 use rand::RngExt;
+use tokio::net::UdpSocket;
 use std::time::{SystemTime, UNIX_EPOCH};
+
+use crate::config;
 
 #[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
 pub struct Tick {
@@ -18,7 +21,7 @@ pub fn generate_tick() -> Tick {
 	// random symbol
 	let sym_len = SYMBOLS.len();
 	let sym_idx = rng.random_range(0..sym_len);
-	
+
 	// random price
 	let price = rng.random_range(1000.0..15000.0);
 	
@@ -38,4 +41,10 @@ pub fn generate_tick() -> Tick {
 		price,
 		timestamp
 	}
+}
+
+pub async fn send_tick(socket: &UdpSocket, tick: &Tick) -> Result<(), Box<dyn std::error::Error>> {
+	let json = serde_json::to_string(tick)?;
+	socket.send_to(json.as_bytes(), config::FEED_HANDLER_ADDR).await?;
+	Ok(())
 }
